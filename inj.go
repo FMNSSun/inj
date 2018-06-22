@@ -107,6 +107,7 @@ func (f *Injector) inject(a interface{}) {
 	
 	for i := 0; i < nf; i++ {
 		fld := rt.Field(i)
+
 		inj, _ := fld.Tag.Lookup("inject")
 		
 		if inj == "" {
@@ -123,12 +124,11 @@ func (f *Injector) inject(a interface{}) {
 		
 		it_rv := reflect.ValueOf(it)
 
-		fmt.Println(it_rv.Kind())
+		rv.Field(i).Set(it_rv)
+
 
 		if it_rv.Kind() == reflect.Ptr || it_rv.Kind() == reflect.Struct {
 			f.inject(it)
 		}
-
-		rv.Field(i).Set(it_rv)
 	}
 }
